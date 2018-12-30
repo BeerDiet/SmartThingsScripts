@@ -21,7 +21,7 @@ definition(
     namespace: "KenCote",
     author: "Ken Cote",
     description: "Give me dat movie experience",
-    category: "",
+    category: "Convenience",
     iconUrl: "http://cdn.device-icons.smartthings.com/Entertainment/entertainment6-icn.png",
     iconX2Url: "http://cdn.device-icons.smartthings.com/Entertainment/entertainment6-icn@2x.png",
     iconX3Url: "http://cdn.device-icons.smartthings.com/Entertainment/entertainment6-icn@3x.png")
