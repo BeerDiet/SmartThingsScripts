@@ -9,12 +9,16 @@ definition(
 )
 
 preferences {
-    section("When these are switched on..."){
+    section("Trigger Devices"){
 		input "switchOn", "capability.switch", multiple: true, title: "Devices?"
 	}
-    section("Do this stuff") {
+    section("Action Devices") {
 		input "fanLevel1", "capability.switchLevel", multiple: true, title: "Fan?"
+        input "wakeupLights", "capability.switchLevel", title: "Wakeup Lights", required: false, multiple: true
+    }
+    section ("Preferences") {
         input "minutesToWait", "number", title: "Delay fan for how many minutes"
+        input "stepDuration", "number", title: "Seconds delay between light increases"
         input "sleepTime", "time", title: "When to go to sleep"
 		input "wakeTimeEarly", "time", title: "When to wake up early"
         input "wakeTime", "time", title: "When to wake up normal"
@@ -170,11 +174,13 @@ def TurnFanDown()
 def SleepTimeHandler(evt)
 {
 	TurnFanUp()
+    wakeupLights.setLevel(0)
 }
 
 def WakeTimeHandler(evt)
 {
 	TurnFanDown()
+    Brighten()
 }
 
 def ShutStuffOff()
@@ -188,5 +194,18 @@ def ShutStuffOff()
             log.info "Shutting ${switchOn[i]} off"
             switchOn[i].off()
         }
+    }
+}
+
+def Brighten() 
+{
+    def keepBrightening = wakeupLights.currentLevel == 100
+    def dimStep = 2
+    state.currentLevel = state.currentLevel + dimStep 
+
+    if (keepBrightening)
+    {
+        wakeupLights.setLevel(state.currentLevel)
+        runIn(stepDuration, dimProcess)   
     }
 }
