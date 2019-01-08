@@ -199,7 +199,7 @@ def ShutStuffOff()
 
 def Brighten() 
 {
-    def keepBrightening = wakeupLights.currentLevel == 100
+    def keepBrightening = wakeupLights.currentLevel < 100
     def dimStep = 2
     state.currentLevel = state.currentLevel + dimStep 
 

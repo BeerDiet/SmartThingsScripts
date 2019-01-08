@@ -25,7 +25,7 @@ definition(
 
 preferences {
 	section("Which lights?"){
-		input "lights", "capability.switch", multiple: true
+		input "lights", "capability.switchLevel", multiple: true
 	}
     section("Downstairs motion sensor to use?") {
 		input "downstairsMotion", "capability.motionSensor", multiple: true
@@ -75,10 +75,10 @@ def LightHandler(evt)
 
     if (((isDownstairsMotion && dmState.value.contains("active")) || (isUpstairsMotion && umState.value == "active")) && (now > sunset || now < sunrise)) {
         log.debug "Foyer lights on"
-        lights.on()
+        lights.setLevel(100)
     } else if (dmState[0].value == "inactive" && dmState[1].value == "inactive" && umState.value == "inactive") {
         log.debug "Foyer lights off"
-        lights.off()
+        lights.setLevel(0)
     }
 }
 
